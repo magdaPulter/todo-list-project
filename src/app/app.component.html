@@ -1,11 +1,22 @@
 <div class="vh-100 vw-100 pb-5 bg-success bg-opacity-10 d-flex justify-content-center align-items-center">
-  <div class="card border border-3 border-success p-2 border-opacity-50" style="width: 20rem;">
-    <div class="card-header bg-success p-3 text-white fw-semibold bg-opacity-75 rounded">
+  <div class="card border border-3 border-success  border-opacity-50 p-2" style="width: 22rem;">
+    <div class="card-header bg-success p-3 text-white fw-semibold fs-5 bg-opacity-75 rounded">
       TODO LIST
     </div>
-    <ul class="list-group list-group-flush">
-      @for(task of tasks$ | async; track task) {
-      <li class="list-group-item text-success-emphasis border-bottom border-success">{{task.content}}</li>
+    <ul class="list-group list-group-flush mt-2">
+      @for(project of projects$ | async; track project){
+      <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
+        {{project.name}}
+        @for(task of tasks$ | async; track task){
+        @if(project.id === task.project_id){
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-success-emphasis border-bottom border-success">
+            {{task.content}}
+          </li>
+        </ul>
+        }
+        }
+      </li>
       }
     </ul>
   </div>
