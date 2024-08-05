@@ -3,7 +3,7 @@
     <div class="card-header bg-success p-3 text-white fw-semibold fs-5 bg-opacity-75 rounded">
       TODO LIST
     </div>
-    <ul class="list-group list-group-flush mt-2">
+    <ul class="list-group list-group-flush border-0 mt-2">
       @for(project of projects$ | async; track project){
       <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
         {{project.name}}
@@ -19,5 +19,27 @@
       </li>
       }
     </ul>
+    <form #form="ngForm" (ngSubmit)="onFormSubmitted(form)">
+      <div class="mt-4 px-3">
+        <div class="mb-3">
+          <label for="task" class="form-label text-success">Add new task</label>
+          <input type="text" class="form-control text-success" id="task" placeholder="new task" name="content" required
+            [(ngModel)]="task.content" #content="ngModel">
+        </div>
+        <select class=" form-select text-success" aria-label="Default select example" name="projectId" required
+          [(ngModel)]="task.project_id" #projectId="ngModel">
+          <option selected>Select Project</option>
+          @for(project of projects$ | async; track project.id){
+          <option value="{{project.id}}">
+            {{project.name}}
+          </option>
+          }
+        </select>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="px-5 btn my-3 bg-success text-white fw-semibold bg-opacity-75"
+          [disabled]="form.invalid">Add task</button>
+      </div>
+    </form>
   </div>
 </div>
