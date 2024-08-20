@@ -1,12 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { TaskModel } from './models/task-model.model';
 import { ProjectModel } from './models/project-model.model';
 import { FormsModule, NgForm } from '@angular/forms';
 import { utils } from './utils';
+import { TaskService } from './services/task-service.service';
+import { ProjectService } from './services/project-service.service';
 
 @Component({
   selector: 'app-root',
@@ -25,50 +26,20 @@ export class AppComponent {
     due_date: '',
   };
 
-  TOKEN: string = '23c109ece8896fe9b8c55fae14c29cdd327373ab';
-  headers: HttpHeaders = new HttpHeaders().set(
-    `Authorization`,
-    `Bearer ${this.TOKEN}`
-  );
-  url: string = 'https://api.todoist.com/rest/v2';
-
+  taskService = inject(TaskService);
+  projectService = inject(ProjectService);
   minDate = utils.minDate();
 
-  getProjects(): Observable<ProjectModel[]> {
-    return this._httpClient.get<ProjectModel[]>(`${this.url}/projects`, {
-      headers: this.headers,
-    });
-  }
-  getTask(): Observable<TaskModel[]> {
-    return this._httpClient.get<TaskModel[]>(`${this.url}/tasks`, {
-      headers: this.headers,
-    });
-  }
-  createTask(task: TaskModel) {
-    return this._httpClient.post<TaskModel>(`${this.url}/tasks`, task, {
-      headers: this.headers,
-    });
-  }
-  updateTask(task: TaskModel) {
-    return this._httpClient.patch<TaskModel>(
-      `${this.url}/tasks/${task.id}`,
-      task,
-      {
-        headers: this.headers,
-      }
-    );
-  }
+  tasks$: Observable<TaskModel[]> = this.taskService.getTask();
+  projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
 
-  tasks$: Observable<TaskModel[]> = this.getTask();
-  projects$: Observable<ProjectModel[]> = this.getProjects();
-
-  constructor(private _httpClient: HttpClient) {}
+  constructor() {}
 
   onCheck(task: TaskModel) {}
 
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
-      this.createTask(this.task).subscribe();
+      this.taskService.createTask(this.task).subscribe();
     }
   }
 }
