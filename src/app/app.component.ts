@@ -24,6 +24,9 @@ export class AppComponent {
     description: '',
     is_completed: false,
     due_date: '',
+    due: {
+      date: '',
+    },
   };
 
   taskService = inject(TaskService);
