@@ -4,7 +4,5 @@ export interface TaskModel {
   readonly description: string;
   readonly project_id: string;
   readonly is_completed: boolean;
-  readonly due: {
-    readonly date: string;
-  };
+  readonly due_date: string;
 }

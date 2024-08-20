@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TaskModel } from './models/task-model.model';
 import { ProjectModel } from './models/project-model.model';
 import { FormsModule, NgForm } from '@angular/forms';
+import { utils } from './utils';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,7 @@ export class AppComponent {
     id: '',
     description: '',
     is_completed: false,
-    due: {
-      date: '',
-    },
+    due_date: '',
   };
 
   TOKEN: string = '23c109ece8896fe9b8c55fae14c29cdd327373ab';
@@ -33,17 +32,7 @@ export class AppComponent {
   );
   url: string = 'https://api.todoist.com/rest/v2';
 
-  minDate() {
-    const date = new Date();
-    const m =
-      date.getMonth() + 1 < 10
-        ? `0${date.getMonth() + 1}`
-        : date.getMonth() + 1;
-    const d = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-    const y = date.getFullYear();
-
-    return `${y}-${m}-${d}`;
-  }
+  minDate = utils.minDate();
 
   getProjects(): Observable<ProjectModel[]> {
     return this._httpClient.get<ProjectModel[]>(`${this.url}/projects`, {
@@ -73,19 +62,12 @@ export class AppComponent {
   tasks$: Observable<TaskModel[]> = this.getTask();
   projects$: Observable<ProjectModel[]> = this.getProjects();
 
-  constructor(private _httpClient: HttpClient) {
-    this.tasks$.subscribe((val) => console.log(val));
-  }
+  constructor(private _httpClient: HttpClient) {}
 
-  onCheck(task: TaskModel) {
-    // this.updateTask(task).subscribe();
-  }
+  onCheck(task: TaskModel) {}
 
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
-      // console.log(this.task);
-      console.log(this.task);
-
       this.createTask(this.task).subscribe();
     }
   }
