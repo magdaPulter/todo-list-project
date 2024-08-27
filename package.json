@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run config -- --environment=dev && ng serve",
-    "build": "npm run config -- --environment=prod && ng build",
+    "build": "npm run config -- --environment=prod && ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:todo-list-project": "node dist/todo-list-project/server/server.mjs"
