@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { environment } from '../environment/environment.prod';
+import { environment } from '../environment/environment';
 
 export const servicesUtils = {
   headers: new HttpHeaders().set(

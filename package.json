@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "npm run config -- --environment=dev && ng serve",
+    "build": "npm run config -- --environment=prod && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:todo-list-project": "node dist/todo-list-project/server/server.mjs"
