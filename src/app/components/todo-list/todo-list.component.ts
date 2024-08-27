@@ -36,11 +36,8 @@ export class TodoListComponent {
   tasks$: Observable<TaskModel[]> = this.taskService.getAllTasks();
   projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
 
-  constructor() {
-    this.tasks$.subscribe((val) => console.log(val));
-  }
+  constructor() {}
 
-  onEdit(taskId: string) {}
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
       this.taskService.createTask(this.task).subscribe();
