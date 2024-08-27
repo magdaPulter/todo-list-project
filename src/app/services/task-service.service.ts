@@ -10,10 +10,19 @@ import { servicesUtils } from '../serviceUtils';
 export class TaskService {
   constructor(private _httpClient: HttpClient) {}
 
-  getTask(): Observable<TaskModel[]> {
+  getAllTasks(): Observable<TaskModel[]> {
     return this._httpClient.get<TaskModel[]>(`${servicesUtils.url}/tasks`, {
       headers: servicesUtils.headers,
     });
+  }
+
+  getTask(taskId: string) {
+    return this._httpClient.get<TaskModel>(
+      `${servicesUtils.url}/tasks/${taskId}`,
+      {
+        headers: servicesUtils.headers,
+      }
+    );
   }
   createTask(task: TaskModel) {
     return this._httpClient.post<TaskModel>(

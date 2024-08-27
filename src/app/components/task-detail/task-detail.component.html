@@ -1,0 +1,19 @@
+@if(taskDetail$ | async; as task){
+<div class="min-vh-100 min-vw-100 pb-5 bg-success bg-opacity-10 d-flex justify-content-center align-items-center">
+    <div class="card border border-3 border-success  border-opacity-50 p-2 mt-5">
+        <div class="card-header bg-success p-3 text-white fw-semibold fs-5 bg-opacity-75 rounded">
+            TODO LIST
+        </div>
+        <div class="px-4">
+            <div class="mt-4 d-flex justify-content-between">
+                <p class="me-3">{{task.content}}</p>
+                <p class="fs-6 fw-light align-self-center">{{task.due.date}}</p>
+            </div>
+            <button class="btn border-0" routerLink="/">
+                <i class="bi bi-arrow-left text-success"></i>
+                <span class="text-success ms-2">Go back</span>
+            </button>
+        </div>
+    </div>
+</div>
+}
