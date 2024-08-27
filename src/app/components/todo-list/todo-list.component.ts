@@ -7,11 +7,12 @@ import { ProjectService } from '../../services/project-service.service';
 import { ProjectModel } from '../../models/project-model.model';
 import { NgForm, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
 })
@@ -32,11 +33,14 @@ export class TodoListComponent {
   projectService = inject(ProjectService);
   minDate = utils.minDate();
 
-  tasks$: Observable<TaskModel[]> = this.taskService.getTask();
+  tasks$: Observable<TaskModel[]> = this.taskService.getAllTasks();
   projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
 
-  constructor() {}
+  constructor() {
+    this.tasks$.subscribe((val) => console.log(val));
+  }
 
+  onEdit(taskId: string) {}
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
       this.taskService.createTask(this.task).subscribe();
