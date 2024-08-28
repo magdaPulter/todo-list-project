@@ -1,64 +1,57 @@
-<div class="min-vh-100 min-vw-100 pb-5 bg-success bg-opacity-10 d-flex justify-content-center align-items-center">
-    <div class="card border border-3 border-success  border-opacity-50 p-2 mt-5" style="max-width: 30rem;">
-        <div class="card-header bg-success p-3 text-white fw-semibold fs-5 bg-opacity-75 rounded">
-            TODO LIST
-        </div>
-        <ul class="list-group list-group-flush border-0">
-            <p class="text-end  mt-1 pe-4">
-                <button class="btn">
-                    <span>sort by date</span><i class="bi bi-sort-up ms-2"></i>
-                </button>
-            </p>
-            @for(project of projects$ | async; track project){
-            <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
-                {{project.name}}
-                @for(task of tasks$ | async; track task){
-                @if(project.id === task.project_id){
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-success-emphasis border-bottom border-success">
-                        <div class="form-check">
-                            <input class="form-check-input bg-success bg-opacity-75" [(ngModel)]="task.is_completed"
-                                type="checkbox" [value]="task.is_completed" name="task.is_completed" [id]="task.id">
-                            <label class="form-check-label d-flex justify-content-between" [for]="task.id"
-                                [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">
-                                <span class="me-3 w-50">{{task.content}}</span>
-                                <span class="fs-6 fw-light align-self-center">{{task.due.date}}</span>
-                                <button class="btn border-0 ms-4" [routerLink]="'tasks/'+ task.id"><i
-                                        class="bi bi-pencil"></i></button>
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-                }
-                }
+<ul class="list-group list-group-flush border-0">
+    <p class="text-end  mt-1 pe-4">
+        <button class="btn">
+            <span>sort by date</span><i class="bi bi-sort-up ms-2"></i>
+        </button>
+    </p>
+    @for(project of projects$ | async; track project){
+    <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
+        {{project.name}}
+        @for(task of tasks$ | async; track task){
+        @if(project.id === task.project_id){
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item text-success-emphasis border-bottom border-success">
+                <div class="form-check">
+                    <input class="form-check-input bg-success bg-opacity-75" [(ngModel)]="task.is_completed"
+                        type="checkbox" [value]="task.is_completed" name="task.is_completed" [id]="task.id">
+                    <label class="form-check-label d-flex justify-content-between" [for]="task.id"
+                        [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">
+                        <span class="me-3 w-50">{{task.content}}</span>
+                        <span class="fs-6 fw-light align-self-center">{{task.due.date}}</span>
+                        <button class="btn border-0 ms-4" [routerLink]="'tasks/'+ task.id"><i
+                                class="bi bi-pencil"></i></button>
+                    </label>
+                </div>
             </li>
-            }
         </ul>
-        <form #form="ngForm" (ngSubmit)="onFormSubmitted(form)">
-            <div class="mt-4 px-3">
-                <div class="mb-3">
-                    <label for="task" class="form-label text-success">Add new task</label>
-                    <input type="text" class="form-control text-success" id="task" placeholder="new task" name="content"
-                        required [(ngModel)]="task.content" #content="ngModel">
-                </div>
-                <select class=" form-select text-success" aria-label="Default select example" name="projectId" required
-                    [(ngModel)]="task.project_id" #projectId="ngModel">
-                    <option selected>Select Project</option>
-                    @for(project of projects$ | async; track project.id){
-                    <option value="{{project.id}}">
-                        {{project.name}}
-                    </option>
-                    }
-                </select>
-                <div class="my-3">
-                    <input type="date" class="form-control text-success" id="taskDueDate" placeholder="due date"
-                        name="taskDueDate" required [min]="minDate" [(ngModel)]="task.due_date" #taskDueDate="ngModel">
-                </div>
-            </div>
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="px-5 btn my-3 bg-success text-white fw-semibold bg-opacity-75"
-                    [disabled]="form.invalid">Add task</button>
-            </div>
-        </form>
+        }
+        }
+    </li>
+    }
+</ul>
+<form #form="ngForm" (ngSubmit)="onFormSubmitted(form)">
+    <div class="mt-4 px-3">
+        <div class="mb-3">
+            <label for="task" class="form-label text-success">Add new task</label>
+            <input type="text" class="form-control text-success" id="task" placeholder="new task" name="content"
+                required [(ngModel)]="task.content" #content="ngModel">
+        </div>
+        <select class=" form-select text-success" aria-label="Default select example" name="projectId" required
+            [(ngModel)]="task.project_id" #projectId="ngModel">
+            <option selected>Select Project</option>
+            @for(project of projects$ | async; track project.id){
+            <option value="{{project.id}}">
+                {{project.name}}
+            </option>
+            }
+        </select>
+        <div class="my-3">
+            <input type="date" class="form-control text-success" id="taskDueDate" placeholder="due date"
+                name="taskDueDate" required [min]="minDate" [(ngModel)]="task.due_date" #taskDueDate="ngModel">
+        </div>
     </div>
-</div>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="px-5 btn my-3 bg-success text-white fw-semibold bg-opacity-75"
+            [disabled]="form.invalid">Add task</button>
+    </div>
+</form>
