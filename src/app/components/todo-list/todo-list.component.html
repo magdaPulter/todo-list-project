@@ -1,5 +1,5 @@
 <div class="min-vh-100 min-vw-100 pb-5 bg-success bg-opacity-10 d-flex justify-content-center align-items-center">
-    <div class="card border border-3 border-success  border-opacity-50 p-2 mt-5">
+    <div class="card border border-3 border-success  border-opacity-50 p-2 mt-5" style="max-width: 30rem;">
         <div class="card-header bg-success p-3 text-white fw-semibold fs-5 bg-opacity-75 rounded">
             TODO LIST
         </div>
@@ -21,7 +21,7 @@
                                 type="checkbox" [value]="task.is_completed" name="task.is_completed" [id]="task.id">
                             <label class="form-check-label d-flex justify-content-between" [for]="task.id"
                                 [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">
-                                <span class="me-3">{{task.content}}</span>
+                                <span class="me-3 w-50">{{task.content}}</span>
                                 <span class="fs-6 fw-light align-self-center">{{task.due.date}}</span>
                                 <button class="btn border-0 ms-4" [routerLink]="'tasks/'+ task.id"><i
                                         class="bi bi-pencil"></i></button>
