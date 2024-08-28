@@ -18,8 +18,8 @@
                     <li class="list-group-item text-success-emphasis border-bottom border-success">
                         <div class="form-check">
                             <input class="form-check-input bg-success bg-opacity-75" [(ngModel)]="task.is_completed"
-                                type="checkbox" [value]="task.is_completed" name="task.is_completed" id="is_completed">
-                            <label class="form-check-label d-flex justify-content-between" for="is_completed"
+                                type="checkbox" [value]="task.is_completed" name="task.is_completed" [id]="task.id">
+                            <label class="form-check-label d-flex justify-content-between" [for]="task.id"
                                 [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">
                                 <span class="me-3">{{task.content}}</span>
                                 <span class="fs-6 fw-light align-self-center">{{task.due.date}}</span>
