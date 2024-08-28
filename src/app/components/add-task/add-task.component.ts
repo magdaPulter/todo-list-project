@@ -8,11 +8,12 @@ import { ProjectService } from '../../services/project-service.service';
 import { utils } from '../../utils';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
 
 @Component({
   selector: 'app-add-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, GoBackBtnComponent],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss',
 })
