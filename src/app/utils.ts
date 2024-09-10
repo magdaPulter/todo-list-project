@@ -10,4 +10,15 @@ export const utils = {
 
     return `${y}-${m}-${d}`;
   },
+  task: {
+    content: '',
+    project_id: '',
+    id: '',
+    description: '',
+    is_completed: false,
+    due_date: '',
+    due: {
+      date: '',
+    },
+  },
 };

@@ -18,10 +18,7 @@
             <input type="date" class="form-control text-success" id="taskDueDate" placeholder="due date"
                 name="taskDueDate" required [min]="minDate" [(ngModel)]="task.due_date" #taskDueDate="ngModel">
         </div>
-    </div>
-    <div class="d-flex justify-content-center">
-        <button type="submit" class="px-5 btn my-3 bg-success text-white fw-semibold bg-opacity-75"
-            [disabled]="form.invalid" routerLink="/">Add task</button>
+        <button type="submit" class="btn btn-success" [disabled]="form.invalid" routerLink="/">Add task</button>
     </div>
 </form>
 <app-go-back-btn></app-go-back-btn>
