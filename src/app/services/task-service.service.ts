@@ -16,7 +16,7 @@ export class TaskService {
     });
   }
 
-  getTask(taskId: string) {
+  getTask(taskId: string): Observable<TaskModel> {
     return this._httpClient.get<TaskModel>(
       `${servicesUtils.url}/tasks/${taskId}`,
       {
@@ -24,9 +24,18 @@ export class TaskService {
       }
     );
   }
-  createTask(task: TaskModel) {
+  createTask(task: TaskModel): Observable<TaskModel> {
     return this._httpClient.post<TaskModel>(
       `${servicesUtils.url}/tasks`,
+      task,
+      {
+        headers: servicesUtils.headers,
+      }
+    );
+  }
+  update(task: TaskModel): Observable<TaskModel> {
+    return this._httpClient.post<TaskModel>(
+      `${servicesUtils.url}/tasks/${task.id}`,
       task,
       {
         headers: servicesUtils.headers,

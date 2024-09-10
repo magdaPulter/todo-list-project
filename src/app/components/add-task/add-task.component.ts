@@ -18,17 +18,7 @@ import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
   styleUrl: './add-task.component.scss',
 })
 export class AddTaskComponent {
-  task: TaskModel = {
-    content: '',
-    project_id: '',
-    id: '',
-    description: '',
-    is_completed: false,
-    due_date: '',
-    due: {
-      date: '',
-    },
-  };
+  task: TaskModel = utils.task;
 
   minDate = utils.minDate();
 
