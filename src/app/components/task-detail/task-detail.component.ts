@@ -18,21 +18,16 @@ import { ProjectModel } from '../../models/project-model.model';
   styleUrl: './task-detail.component.scss',
 })
 export class TaskDetailComponent {
-  task: TaskModel = utils.task;
+  // task: TaskModel = utils.task;
   taskId!: string;
   taskDetail$: Observable<TaskModel> = of();
-  minDate = utils.minDate();
 
   taskService: TaskService = inject(TaskService);
   @Input() set id(id: string) {
     this.taskId = id;
     this.taskDetail$ = this.taskService.getTask(id);
-    this.taskService.getTask(id).subscribe((task) => (this.task = task));
+    this.taskService.getTask(id);
   }
   projectService = inject(ProjectService);
   projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
-
-  onTaskUpdated() {
-    this.taskService.update(this.task).subscribe();
-  }
 }
