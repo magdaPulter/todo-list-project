@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { TaskModel } from '../../models/task-model.model';
 import { Observable } from 'rxjs';
-import { utils } from '../../utils';
 import { TaskService } from '../../services/task-service.service';
 import { ProjectService } from '../../services/project-service.service';
 import { ProjectModel } from '../../models/project-model.model';

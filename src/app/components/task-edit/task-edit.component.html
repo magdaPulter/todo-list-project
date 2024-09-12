@@ -21,5 +21,6 @@
     <button type="submit" class="btn btn-success" [disabled]="form.invalid">Save</button>
 </form>
 <button class="btn border-0 ms-2" [routerLink]="'/task-detail/'+ task.id">
-    <app-go-back-btn></app-go-back-btn>
+    <i class="bi bi-arrow-left text-success"></i>
+    <span class="text-success ms-2">Go to detail</span>
 </button>

@@ -17,9 +17,16 @@
                     <label class="form-check-label d-flex justify-content-between" [for]="task.id"
                         [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">
                         <span class="me-3 w-50">{{task.content}}</span>
-                        <span class="fs-6 fw-light align-self-center">{{task.due?.date}}</span>
-                        <button class="btn border-0 ms-4" [routerLink]="'tasks/'+ task.id"><i
-                                class="bi bi-pencil"></i></button>
+                        <div class="w-50">
+                            <span class="fs-6 fw-light align-self-center">{{task.due?.date}}</span>
+                            <button class="btn border-0 ms-4" [routerLink]="'task-detail/'+ task.id">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <button class="btn border-0" [routerLink]="'edit-task/'+ task.id">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+
                     </label>
                 </div>
             </li>
