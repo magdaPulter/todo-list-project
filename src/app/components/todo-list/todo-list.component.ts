@@ -23,4 +23,9 @@ export class TodoListComponent {
   projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
 
   constructor() {}
+
+  onCheck(task: TaskModel) {
+    console.log(task.is_completed);
+    this.taskService.update(task).subscribe();
+  }
 }
