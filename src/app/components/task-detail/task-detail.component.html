@@ -1,7 +1,7 @@
-<div class="mt-1 p-5">
+<div class="mt-4 px-3" style="max-width: 32rem;">
     @if(taskDetail$ | async; as task) {
     <div class="d-flex justify-content-between">
-        <h3>{{task.content}}</h3>
+        <p class="fs-5">{{task.content}}</p>
         <button class="btn border-0 ms-4" [routerLink]="'/edit-task/'+ task.id">
             <i class="bi bi-pencil"></i>
         </button>
