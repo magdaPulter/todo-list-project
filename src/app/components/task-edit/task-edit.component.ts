@@ -35,13 +35,9 @@ export class TaskEditComponent {
 
   onTaskUpdated(form: NgForm) {
     if (form.valid) {
-      this.taskService
-        .update(this.task)
-        .subscribe((updatedTask) =>
-          this.router.navigateByUrl(`/task-detail/${updatedTask.id}`)
-        );
-
-      console.log(this.task.project_id);
+      this.taskService.update(this.task).subscribe((updatedTask) => {
+        next: () => this.router.navigateByUrl(`/task-detail/${updatedTask.id}`);
+      });
     }
   }
 }

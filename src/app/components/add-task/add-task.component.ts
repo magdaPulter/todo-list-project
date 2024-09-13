@@ -7,7 +7,7 @@ import { ProjectModel } from '../../models/project-model.model';
 import { ProjectService } from '../../services/project-service.service';
 import { utils } from '../../utils';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
 
 @Component({
@@ -26,10 +26,13 @@ export class AddTaskComponent {
   projectService = inject(ProjectService);
 
   projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
+  router = inject(Router);
 
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
-      this.taskService.createTask(this.task).subscribe();
+      this.taskService.update(this.task).subscribe((updatedTask) => {
+        next: () => this.router.navigateByUrl(`/task-detail/${updatedTask.id}`);
+      });
     }
   }
 }
