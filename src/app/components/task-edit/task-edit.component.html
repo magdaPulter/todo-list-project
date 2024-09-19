@@ -5,15 +5,6 @@
             <input type="task" class="form-control text-success" id="task.content" name="taskContent" required
                 [(ngModel)]="task.content">
         </div>
-        <select class=" form-select text-success" aria-label="Default select example" name="projectId" required
-            [(ngModel)]="task.project_id">
-            <option selected>Select Project</option>
-            @for(project of projects$ | async; track project.id){
-            <option value="{{project.id}}">
-                {{project.name}}
-            </option>
-            }
-        </select>
         <div class="my-3">
             <input type="date" class="form-control text-success" id="taskDueDate" name="taskDueDate" [min]="minDate"
                 [(ngModel)]="task.due_date" #taskDueDate="ngModel">
