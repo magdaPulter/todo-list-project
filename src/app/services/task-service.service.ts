@@ -42,4 +42,13 @@ export class TaskService {
       }
     );
   }
+  close(task: TaskModel): Observable<TaskModel> {
+    return this._httpClient.post<TaskModel>(
+      `${servicesUtils.url}/tasks/${task.id}/close`,
+      task,
+      {
+        headers: servicesUtils.headers,
+      }
+    );
+  }
 }

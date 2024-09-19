@@ -25,7 +25,6 @@ export class TodoListComponent {
   constructor() {}
 
   onCheck(task: TaskModel) {
-    console.log(task.is_completed);
-    this.taskService.update(task).subscribe();
+    this.taskService.close(task).subscribe();
   }
 }
