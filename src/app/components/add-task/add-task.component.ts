@@ -10,6 +10,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
 
+// export enum Priority {
+//   ONE = 1,
+//   TWO = 2,
+//   THREE = 3,
+//   FOUR = 4,
+// }
 @Component({
   selector: 'app-add-task',
   standalone: true,
@@ -19,7 +25,7 @@ import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
 })
 export class AddTaskComponent {
   task: TaskModel = utils.task;
-
+  priority = utils.priority;
   minDate = utils.minDate();
 
   taskService = inject(TaskService);
@@ -30,9 +36,9 @@ export class AddTaskComponent {
 
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
-      this.taskService.update(this.task).subscribe((updatedTask) => {
-        next: () => this.router.navigateByUrl(`/task-detail/${updatedTask.id}`);
-      });
+      this.taskService
+        .createTask(this.task)
+        .subscribe(() => this.router.navigateByUrl('/'));
     }
   }
 }

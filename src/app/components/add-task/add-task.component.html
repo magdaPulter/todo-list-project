@@ -5,12 +5,23 @@
             <input type="text" class="form-control text-success" id="task" placeholder="new task" name="content"
                 required [(ngModel)]="task.content" #content="ngModel">
         </div>
-        <select class=" form-select text-success" aria-label="Default select example" name="projectId" required
-            [(ngModel)]="task.project_id" #projectId="ngModel">
-            <option selected>Select Project</option>
-            @for(project of projects$ | async; track project.id){
+        <select class="form-select text-success mb-3" aria-label="Default select example" name="projectId" required
+            [(ngModel)]="task.project_id">
+            <option selected>Inbox</option>
+            @if(projects$ | async; as projects) {
+            @for(project of projects.slice(1,3); track project.id){
             <option value="{{project.id}}">
                 {{project.name}}
+            </option>
+            }
+            }
+        </select>
+        <select class="form-select text-success" aria-label="Default select example" name="priority" required
+            [(ngModel)]="task.priority">
+            <option selected>1</option>
+            @for(priority of priority.slice(1,priority.length); track priority){
+            <option value="{{priority}}">
+                {{priority}}
             </option>
             }
         </select>
@@ -18,7 +29,7 @@
             <input type="date" class="form-control text-success" id="taskDueDate" placeholder="due date"
                 name="taskDueDate" required [min]="minDate" [(ngModel)]="task.due_date" #taskDueDate="ngModel">
         </div>
-        <button type="submit" class="btn btn-success" [disabled]="form.invalid" routerLink="/">Add task</button>
+        <button type="submit" class="btn btn-success" [disabled]="form.invalid">Add task</button>
     </div>
 </form>
 <app-go-back-btn></app-go-back-btn>

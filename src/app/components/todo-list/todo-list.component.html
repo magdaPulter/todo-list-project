@@ -1,9 +1,24 @@
-<ul class="list-group list-group-flush border-0">
-    <p class="text-end  mt-1 pe-4">
-        <button class="btn">
+<div class="d-flex mt-2">
+    <div class="w-50  m-1">
+        <button class="btn btn-success">
+            <span>sort by priority</span><i class="bi bi-sort-up ms-2"></i>
+        </button><br>
+        <span class="me-1">normal</span>
+        @for(flag of priorityFlag; track flag){
+        <i class="bi bi-flag-fill me-1" [ngClass]="flag"></i>
+        }
+        <span>urgent</span>
+
+    </div>
+    <p class="w-50  mt-1 pe-4">
+        <button class="btn btn-success">
             <span>sort by date</span><i class="bi bi-sort-up ms-2"></i>
         </button>
     </p>
+</div>
+
+<ul class="list-group list-group-flush border-0">
+
     @for(project of projects$ | async; track project){
     <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
         {{project.name}}
@@ -17,7 +32,10 @@
                         name="task.is_completed" [id]="task.id">
                     <label class="form-check-label d-flex justify-content-between" [for]="task.id">
                         <span class="me-3 w-50"
-                            [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">{{task.content}}</span>
+                            [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">{{task.content}}
+                            <i class="bi bi-flag-fill" [ngClass]="priorityFlag[task.priority-1]"></i>
+                        </span>
+
                         <div class="w-50">
                             <span class="fs-6 fw-light align-self-center">{{task.due?.date}}</span>
                             <button class="btn border-0 ms-4" [routerLink]="'task-detail/'+ task.id">

@@ -7,6 +7,7 @@ import { ProjectModel } from '../../models/project-model.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { utils } from '../../utils';
 
 @Component({
   selector: 'app-todo-list',
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './todo-list.component.scss',
 })
 export class TodoListComponent {
+  priorityFlag = utils.priorityFlag;
   taskService = inject(TaskService);
   projectService = inject(ProjectService);
 
