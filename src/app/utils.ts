@@ -36,4 +36,7 @@ export const utils = {
     'text-warning',
     'text-danger',
   ],
+  dateTime(date: string): number {
+    return new Date(date).getTime();
+  },
 };

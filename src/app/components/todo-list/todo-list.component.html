@@ -1,28 +1,22 @@
-<div class="d-flex mt-2">
-    <div class="w-50  m-1">
-        <button class="btn btn-success">
-            <span>sort by priority</span><i class="bi bi-sort-up ms-2"></i>
-        </button><br>
-        <span class="me-1">normal</span>
-        @for(flag of priorityFlag; track flag){
-        <i class="bi bi-flag-fill me-1" [ngClass]="flag"></i>
-        }
-        <span>urgent</span>
-
-    </div>
-    <p class="w-50  mt-1 pe-4">
-        <button class="btn btn-success">
-            <span>sort by date</span><i class="bi bi-sort-up ms-2"></i>
-        </button>
-    </p>
+<div class="d-flex p-3 justify-content-around">
+    @for(sortParameter of sortedByList; track sortParameter){
+    <button class="btn btn-outline-success" (click)="onSortBy(sortParameter)"
+        [ngClass]="{'active': sortParameter === sortedBy()}">
+        sort by {{sortParameter}}
+    </button>
+    }
+    @for(order of orderList; track order) {
+    <button class="btn btn-outline-success" (click)="onSort(order)" [ngClass]="{'active': order === orderBy()}">
+        <i class="bi" [ngClass]="{'bi-sort-up': order === 'Asc', 'bi-sort-down' : order === 'Desc'}"></i>
+    </button>
+    }
 </div>
 
-<ul class="list-group list-group-flush border-0">
-
+<ul class="list-group list-group-flush border-0 ">
     @for(project of projects$ | async; track project){
     <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
         {{project.name}}
-        @for(task of tasks$ | async; track task){
+        @for(task of tasks(); track task){
         @if(project.id === task.project_id){
         <ul class="list-group list-group-flush">
             <li class="list-group-item text-success-emphasis border-bottom border-success">
@@ -33,12 +27,12 @@
                     <label class="form-check-label d-flex justify-content-between" [for]="task.id">
                         <span class="me-3 w-50"
                             [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">{{task.content}}
-                            <i class="bi bi-flag-fill" [ngClass]="priorityFlag[task.priority-1]"></i>
+                            <i class="bi bi-flag-fill ms-3" [ngClass]="priorityFlag[task.priority-1]"></i>
                         </span>
 
-                        <div class="w-50">
+                        <div class="w-50 d-flex">
                             <span class="fs-6 fw-light align-self-center">{{task.due?.date}}</span>
-                            <button class="btn border-0 ms-4" [routerLink]="'task-detail/'+ task.id">
+                            <button class="btn border-0 ps-2 pe-0" [routerLink]="'task-detail/'+ task.id">
                                 <i class="bi bi-three-dots"></i>
                             </button>
                             <button class="btn border-0" [routerLink]="'edit-task/'+ task.id">
