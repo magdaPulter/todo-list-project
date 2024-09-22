@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TaskModel } from '../../models/task-model.model';
 import { TaskService } from '../../services/task-service.service';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,7 @@ export class TaskEditComponent {
   taskId!: string;
   taskDetail$: Observable<TaskModel> = of();
   minDate = utils.minDate();
+  priority = utils.priority;
 
   taskService: TaskService = inject(TaskService);
   @Input() set id(id: string) {
@@ -36,7 +37,7 @@ export class TaskEditComponent {
   onTaskUpdated(form: NgForm) {
     if (form.valid) {
       this.taskService.update(this.task).subscribe((updatedTask) => {
-        next: () => this.router.navigateByUrl(`/task-detail/${updatedTask.id}`);
+        this.router.navigateByUrl(`/task-detail/${updatedTask.id}`);
       });
     }
   }

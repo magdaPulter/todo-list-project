@@ -19,7 +19,7 @@ import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
 })
 export class AddTaskComponent {
   task: TaskModel = utils.task;
-
+  priority = utils.priority;
   minDate = utils.minDate();
 
   taskService = inject(TaskService);
@@ -30,9 +30,9 @@ export class AddTaskComponent {
 
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
-      this.taskService.update(this.task).subscribe((updatedTask) => {
-        next: () => this.router.navigateByUrl(`/task-detail/${updatedTask.id}`);
-      });
+      this.taskService
+        .createTask(this.task)
+        .subscribe(() => this.router.navigateByUrl('/'));
     }
   }
 }
