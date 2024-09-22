@@ -7,7 +7,6 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { TaskModel } from '../../models/task-model.model';
-import { Observable } from 'rxjs';
 import { TaskService } from '../../services/task-service.service';
 import { ProjectService } from '../../services/project-service.service';
 import { ProjectModel } from '../../models/project-model.model';
@@ -34,6 +33,7 @@ export enum Order {
 })
 export class TodoListComponent {
   priorityFlag = utils.priorityFlag;
+  priority = utils.priority;
   taskService = inject(TaskService);
   projectService = inject(ProjectService);
 
@@ -43,11 +43,13 @@ export class TodoListComponent {
   sortedBy: WritableSignal<string | undefined> = signal(undefined);
   orderBy: WritableSignal<string | undefined> = signal(undefined);
 
-  tasks$: Observable<TaskModel[]> = this.taskService.getAllTasks();
   tasks: Signal<TaskModel[]> = toSignal(this.taskService.getAllTasks(), {
     initialValue: [],
   });
-  projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
+  projects: Signal<ProjectModel[]> = toSignal(
+    this.projectService.getProjects(),
+    { initialValue: [] }
+  );
 
   sortedTasks: Signal<TaskModel[]> = computed(() => {
     return this.tasks().sort((a: TaskModel, b: TaskModel) => {

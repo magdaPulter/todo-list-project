@@ -10,12 +10,6 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GoBackBtnComponent } from '../go-back-btn/go-back-btn.component';
 
-// export enum Priority {
-//   ONE = 1,
-//   TWO = 2,
-//   THREE = 3,
-//   FOUR = 4,
-// }
 @Component({
   selector: 'app-add-task',
   standalone: true,

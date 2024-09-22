@@ -1,4 +1,4 @@
-<div class="d-flex p-3 justify-content-around">
+<div class="d-flex px-5 py-3 justify-content-around">
     @for(sortParameter of sortedByList; track sortParameter){
     <button class="btn btn-outline-success" (click)="onSortBy(sortParameter)"
         [ngClass]="{'active': sortParameter === sortedBy()}">
@@ -13,10 +13,10 @@
 </div>
 
 <ul class="list-group list-group-flush border-0 ">
-    @for(project of projects$ | async; track project){
+    @for(project of projects(); track project){
     <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
         {{project.name}}
-        @for(task of tasks(); track task){
+        @for(task of sortedTasks(); track task){
         @if(project.id === task.project_id){
         <ul class="list-group list-group-flush">
             <li class="list-group-item text-success-emphasis border-bottom border-success">
