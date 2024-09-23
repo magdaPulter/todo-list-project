@@ -43,6 +43,8 @@ export class TodoListComponent {
   sortedBy: WritableSignal<string | undefined> = signal(undefined);
   orderBy: WritableSignal<string | undefined> = signal(undefined);
 
+  taskSelected: WritableSignal<TaskModel | undefined> = signal(undefined);
+
   tasks: Signal<TaskModel[]> = toSignal(this.taskService.getAllTasks(), {
     initialValue: [],
   });
@@ -78,5 +80,11 @@ export class TodoListComponent {
   onSort(order: string) {
     this.orderBy.set(order);
     this.sortedTasks();
+  }
+
+  onTaskSelected(task: TaskModel) {
+    return this.taskSelected() === undefined
+      ? this.taskSelected.set(task)
+      : this.taskSelected.set(undefined);
   }
 }

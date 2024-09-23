@@ -30,17 +30,37 @@
                             <i class="bi bi-flag-fill ms-3" [ngClass]="priorityFlag[task.priority-1]"></i>
                         </span>
 
-                        <div class="w-50 d-flex">
-                            <span class="fs-6 fw-light align-self-center">{{task.due?.date}}</span>
-                            <button class="btn border-0 ps-2 pe-0" [routerLink]="'task-detail/'+ task.id">
-                                <i class="bi bi-three-dots"></i>
-                            </button>
-                            <button class="btn border-0" [routerLink]="'edit-task/'+ task.id">
-                                <i class="bi bi-pencil"></i>
+                        <div class="w-50">
+                            <div class="d-flex">
+                                <span class="fs-6 fw-light align-self-center">{{task.due?.date}}</span>
+                                <button class="btn border-0 ps-2 pe-0" [routerLink]="'task-detail/'+ task.id">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button class="btn border-0" [routerLink]="'edit-task/'+ task.id">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
+
+                            <button class="btn btn-success" (click)="onTaskSelected(task)">
+                                <span> {{taskSelected() === task ? 'show less' : 'show more'}}</span>
+                                <i class="bi ms-1"
+                                    [ngClass]="{'bi-chevron-up' : taskSelected() === task, 'bi-chevron-down': taskSelected() !== task}"></i>
                             </button>
                         </div>
                     </label>
                 </div>
+                @if(taskSelected() === task) {
+                <div class="mt-2 border-top border-success">
+                    <h5 class="text-success mt-2">Content</h5>
+                    <p>{{task.content}}</p>
+                    <h5 class="text-success mt-2">Description</h5>
+                    <p>{{task.description}}</p>
+                    <h5 class="text-success">Date</h5>
+                    <p class="fs-6">{{task.due?.date}}</p>
+                    <h5 class="text-success">Priority</h5>
+                    <i class="bi bi-flag-fill ms-3" [ngClass]="priorityFlag[task.priority-1]"></i>
+                </div>
+                }
             </li>
         </ul>
         }
