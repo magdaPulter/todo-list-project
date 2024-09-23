@@ -14,6 +14,11 @@
             </option>
             }
         </select>
+        <div class="form-floating my-3">
+            <textarea class="form-control text-success" placeholder="Leave a comment here" id="floatingTextarea"
+                [(ngModel)]="task.description" name="taskDescription"></textarea>
+            <label class="text-success" for="floatingTextarea">Comments</label>
+        </div>
         <div class="my-3">
             <input type="date" class="form-control text-success" id="taskDueDate" name="taskDueDate" [min]="minDate"
                 [(ngModel)]="task.due_date" #taskDueDate="ngModel">
