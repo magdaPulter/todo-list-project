@@ -39,4 +39,11 @@ export const utils = {
   dateTime(date: string): number {
     return new Date(date).getTime();
   },
+  filterOptions: {
+    search: '',
+    priority: 'Select Priority',
+    projectId: 'Select Project',
+    minDate: '',
+    maxDate: '',
+  },
 };

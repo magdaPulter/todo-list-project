@@ -65,6 +65,22 @@ export class TodoListComponent {
     });
   });
 
+  filterOptions = signal(utils.filterOptions);
+
+  filteredTasks: Signal<TaskModel[]> = computed(() => {
+    return this.filterOptions() === utils.filterOptions
+      ? this.tasks()
+      : this.tasks()
+          .filter((task) =>
+            task.content
+              .toLowerCase()
+              .includes(this.filterOptions().search.toLowerCase())
+          )
+          .filter(
+            (task) => task.priority.toString() === this.filterOptions().priority
+          )
+          .filter((task) => task.project_id === this.filterOptions().projectId);
+  });
   constructor() {}
 
   onCheck(task: TaskModel) {
@@ -78,5 +94,14 @@ export class TodoListComponent {
   onSort(order: string) {
     this.orderBy.set(order);
     this.sortedTasks();
+  }
+  onModelChanged($event: string) {
+    this.filterOptions.set({ ...this.filterOptions(), search: $event });
+  }
+  onProjectChange($event: string) {
+    this.filterOptions.set({ ...this.filterOptions(), projectId: $event });
+  }
+  onPriorityChange($event: string) {
+    this.filterOptions.set({ ...this.filterOptions(), priority: $event });
   }
 }

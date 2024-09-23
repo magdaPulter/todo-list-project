@@ -11,12 +11,42 @@
     </button>
     }
 </div>
-
+<form class="mb-2">
+    <div class="d-flex mb-3 gap-2">
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search text-success"></i></span>
+            <input type="task" ngModel="" name="search" class="form-control text-success"
+                (ngModelChange)="onModelChanged($event)">
+        </div>
+        <select class="form-select text-success" aria-label="Default select example"
+            [(ngModel)]="filterOptions().priority" name="priority" (ngModelChange)="onPriorityChange($event)">
+            <option selected>Select Priority</option>
+            @for(priority of priority; track priority){
+            <option value="{{priority}}">
+                {{priority}}
+            </option>
+            }
+        </select>
+    </div>
+    <div class="d-flex gap-sm-2 gap-0">
+        <select class="form-select text-success" aria-label="Default select example"
+            [(ngModel)]="filterOptions().projectId" name="project" (ngModelChange)="onProjectChange($event)">
+            <option selected>Select Project</option>
+            @for(project of projects(); track project.id){
+            <option value="{{project.id}}">
+                {{project.name}}
+            </option>
+            }
+        </select>
+        <input type="date" class="form-control text-success" [(ngModel)]="filterOptions().minDate" name="minDate">
+        <input type="date" class="form-control text-success" [(ngModel)]="filterOptions().maxDate" name="maxDate">
+    </div>
+</form>
 <ul class="list-group list-group-flush border-0 ">
     @for(project of projects(); track project){
     <li class="list-group-item text-success-emphasis p-2 fs-5 text bg-opacity-50 border-0">
         {{project.name}}
-        @for(task of sortedTasks(); track task){
+        @for(task of filteredTasks(); track task){
         @if(project.id === task.project_id){
         <ul class="list-group list-group-flush">
             <li class="list-group-item text-success-emphasis border-bottom border-success">
