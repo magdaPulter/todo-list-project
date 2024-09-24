@@ -87,4 +87,6 @@ export class TodoListComponent {
       ? this.taskSelected.set(task)
       : this.taskSelected.set(undefined);
   }
+
+  onLiveEdit() {}
 }
