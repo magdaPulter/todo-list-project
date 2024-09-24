@@ -79,7 +79,14 @@ export class TodoListComponent {
           .filter(
             (task) => task.priority.toString() === this.filterOptions().priority
           )
-          .filter((task) => task.project_id === this.filterOptions().projectId);
+          .filter((task) => task.project_id === this.filterOptions().projectId)
+          .filter(
+            (task) =>
+              utils.dateTime(this.filterOptions().minDate) <
+                utils.dateTime(task.due!.date) &&
+              utils.dateTime(task.due!.date) <
+                utils.dateTime(this.filterOptions().maxDate)
+          );
   });
   constructor() {}
 
@@ -103,5 +110,11 @@ export class TodoListComponent {
   }
   onPriorityChange($event: string) {
     this.filterOptions.set({ ...this.filterOptions(), priority: $event });
+  }
+  onMinDateChange($event: string) {
+    this.filterOptions.set({ ...this.filterOptions(), minDate: $event });
+  }
+  onMaxDateChange($event: string) {
+    this.filterOptions.set({ ...this.filterOptions(), maxDate: $event });
   }
 }
