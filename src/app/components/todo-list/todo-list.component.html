@@ -38,8 +38,8 @@
             </option>
             }
         </select>
-        <input type="date" class="form-control text-success" [(ngModel)]="filterOptions().minDate" name="minDate">
-        <input type="date" class="form-control text-success" [(ngModel)]="filterOptions().maxDate" name="maxDate">
+        <input type="date" class="form-control text-success" [(ngModel)]="filterOptions().minDate" name="minDate" (ngModelChange)="onMinDateChange($event)">
+        <input type="date" class="form-control text-success" [(ngModel)]="filterOptions().maxDate" name="maxDate" (ngModelChange)="onMaxDateChange($event)">
     </div>
 </form>
 <ul class="list-group list-group-flush border-0 ">
