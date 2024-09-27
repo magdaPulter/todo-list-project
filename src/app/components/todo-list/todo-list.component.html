@@ -41,7 +41,7 @@
                                 </button>
                             </div>
 
-                            <button class="btn btn-success" (click)="onTaskSelected(task)">
+                            <button class="btn btn-light text-success" (click)="onTaskSelected(task)">
                                 <span> {{taskSelected() === task ? 'show less' : 'show more'}}</span>
                                 <i class="bi ms-1"
                                     [ngClass]="{'bi-chevron-up' : taskSelected() === task, 'bi-chevron-down': taskSelected() !== task}"></i>
