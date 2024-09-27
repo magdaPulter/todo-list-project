@@ -28,6 +28,21 @@ export class AddTaskComponent {
   projects$: Observable<ProjectModel[]> = this.projectService.getProjects();
   router = inject(Router);
 
+  ngOnInit() {
+    this.task = {
+      content: '',
+      project_id: '',
+      id: '',
+      description: '',
+      is_completed: false,
+      priority: 1,
+      due_date: '',
+      due: {
+        date: '',
+      },
+    };
+  }
+
   onFormSubmitted(form: NgForm) {
     if (form.valid) {
       this.taskService
