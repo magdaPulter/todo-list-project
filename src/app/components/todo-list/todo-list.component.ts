@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { utils } from '../../utils';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FilterOptionsModel } from '../../models/filtersOptions-model';
 
 export enum SortParameter {
   PRIORITY = 'priority',
@@ -51,70 +52,60 @@ export class TodoListComponent {
     { initialValue: [] }
   );
 
-  sortedTasks: Signal<TaskModel[]> = computed(() => {
-    return this.tasks().sort((a: TaskModel, b: TaskModel) => {
-      if (this.sortedBy() === 'priority') {
-        return this.orderBy() === 'Asc'
-          ? a.priority - b.priority
-          : b.priority - a.priority;
-      } else {
-        return this.orderBy() === 'Asc'
-          ? utils.dateTime(a.due!.date) - utils.dateTime(b.due!.date)
-          : utils.dateTime(b.due!.date) - utils.dateTime(a.due!.date);
-      }
-    });
-  });
-
   filterOptions = signal(utils.filterOptions);
 
-  filteredTasks: Signal<TaskModel[]> = computed(() => {
-    return this.filterOptions() === utils.filterOptions
-      ? this.tasks()
-      : this.tasks()
-          .filter((task) =>
-            task.content
-              .toLowerCase()
-              .includes(this.filterOptions().search.toLowerCase())
-          )
-          .filter(
-            (task) => task.priority.toString() === this.filterOptions().priority
-          )
-          .filter((task) => task.project_id === this.filterOptions().projectId)
-          .filter(
-            (task) =>
-              utils.dateTime(this.filterOptions().minDate) <
-                utils.dateTime(task.due!.date) &&
-              utils.dateTime(task.due!.date) <
-                utils.dateTime(this.filterOptions().maxDate)
-          );
+  filteredSortedTasks: Signal<TaskModel[]> = computed(() => {
+    return this.tasks()
+      .filter((task) => {
+        return task.content.toLowerCase().includes(this.filterOptions().search);
+      })
+      .filter((task) =>
+        this.filterOptions().priority === 'Select Priority'
+          ? task
+          : task.priority.toString() === this.filterOptions().priority
+      )
+      .filter((task) =>
+        this.filterOptions().projectId === 'Select Project'
+          ? task
+          : task.project_id === this.filterOptions().projectId
+      )
+      .sort((a: TaskModel, b: TaskModel) => {
+        if (this.sortedBy() === 'priority') {
+          return this.orderBy() === 'Asc'
+            ? a.priority - b.priority
+            : b.priority - a.priority;
+        } else {
+          return this.orderBy() === 'Asc'
+            ? utils.dateTime(a.due!.date) - utils.dateTime(b.due!.date)
+            : utils.dateTime(b.due!.date) - utils.dateTime(a.due!.date);
+        }
+      });
   });
-  constructor() {}
 
   onCheck(task: TaskModel) {
     this.taskService.close(task).subscribe();
   }
   onSortBy(sortParameter: string) {
     this.sortedBy.set(sortParameter);
-    this.sortedTasks();
+    this.filteredSortedTasks();
   }
 
   onSort(order: string) {
     this.orderBy.set(order);
-    this.sortedTasks();
+    this.filteredSortedTasks();
   }
-  onModelChanged($event: string) {
-    this.filterOptions.set({ ...this.filterOptions(), search: $event });
-  }
-  onProjectChange($event: string) {
-    this.filterOptions.set({ ...this.filterOptions(), projectId: $event });
-  }
-  onPriorityChange($event: string) {
-    this.filterOptions.set({ ...this.filterOptions(), priority: $event });
-  }
-  onMinDateChange($event: string) {
-    this.filterOptions.set({ ...this.filterOptions(), minDate: $event });
-  }
-  onMaxDateChange($event: string) {
-    this.filterOptions.set({ ...this.filterOptions(), maxDate: $event });
+
+  onModelChanged($event: keyof FilterOptionsModel, parameter: string) {
+    switch (parameter) {
+      case 'search':
+        this.filterOptions.set({ ...this.filterOptions(), search: $event });
+        break;
+      case 'priority':
+        this.filterOptions.set({ ...this.filterOptions(), priority: $event });
+        break;
+      case 'projectId':
+        this.filterOptions.set({ ...this.filterOptions(), projectId: $event });
+        break;
+    }
   }
 }

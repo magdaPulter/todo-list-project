@@ -43,7 +43,5 @@ export const utils = {
     search: '',
     priority: 'Select Priority',
     projectId: 'Select Project',
-    minDate: '',
-    maxDate: '',
   },
 };
