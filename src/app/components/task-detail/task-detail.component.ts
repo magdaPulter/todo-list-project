@@ -18,7 +18,6 @@ import { ProjectModel } from '../../models/project-model.model';
   styleUrl: './task-detail.component.scss',
 })
 export class TaskDetailComponent {
-  // task: TaskModel = utils.task;
   taskId!: string;
   taskDetail$: Observable<TaskModel> = of();
 
