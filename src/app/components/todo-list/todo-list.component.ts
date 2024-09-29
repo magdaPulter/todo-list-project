@@ -15,7 +15,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { utils } from '../../utils';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FilterOptionsModel } from '../../models/filtersOptions-model';
+import { FilterOptionsModel } from '../../models/filters-options.model';
+import { EditModeModel } from '../../models/edit-mode.model';
 
 export enum SortParameter {
   PRIORITY = 'priority',
@@ -35,6 +36,8 @@ export enum Order {
 export class TodoListComponent {
   priorityFlag = utils.priorityFlag;
   priority = utils.priority;
+  minDate = utils.minDate();
+  task = utils.task;
   taskService = inject(TaskService);
   projectService = inject(ProjectService);
 
@@ -53,6 +56,8 @@ export class TodoListComponent {
     this.projectService.getProjects(),
     { initialValue: [] }
   );
+
+  editMode: WritableSignal<EditModeModel> = signal(utils.editParameters);
 
   filterOptions = signal(utils.filterOptions);
 
@@ -110,12 +115,35 @@ export class TodoListComponent {
         break;
     }
   }
-
   onTaskSelected(task: TaskModel) {
+    this.editMode.set(utils.editParameters);
     return this.taskSelected() === undefined
       ? this.taskSelected.set(task)
       : this.taskSelected.set(undefined);
   }
 
-  onLiveEdit() {}
+  onLiveEdit(parameter: string) {
+    switch (parameter) {
+      case 'content':
+        this.editMode.set({ ...this.editMode(), content: true });
+        break;
+      case 'description':
+        this.editMode.set({ ...this.editMode(), description: true });
+        break;
+      case 'due_date':
+        this.editMode.set({ ...this.editMode(), due_date: true });
+        break;
+      case 'priority':
+        this.editMode.set({ ...this.editMode(), priority: true });
+        break;
+    }
+  }
+  onTaskUpdated(task: TaskModel) {
+    this.taskService.update(task).subscribe(() => {
+      this.taskSelected.set(undefined);
+    });
+  }
+  onLiveEditCancel() {
+    this.taskSelected.set(undefined);
+  }
 }

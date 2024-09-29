@@ -80,36 +80,81 @@
                 </div>
                 @if(taskSelected() === task) {
                 <div class="mt-2 border-top border-success">
-                    <div class="mt-3">
-                        <div class="d-flex">
-                            <h5 class="text-success mt-2">Content</h5>
-                            <button class="btn btn-outline-success btn-sm ms-5" (click)="onLiveEdit()">Live
-                                Edit</button>
+                    <form (ngSubmit)="onTaskUpdated(task)">
+                        <div class="mt-3">
+                            <div class="d-flex mt-2">
+                                <h5 class="text-success w-50">Content</h5>
+                                <div class="w-50">
+                                    <button type="button" class="btn btn-outline-success mb-2 btn-sm"
+                                        (click)="onLiveEdit('content')">Live
+                                        Edit</button>
+                                </div>
+                            </div>
+                            @if(editMode().content) {
+                            <input type="task" class="form-control text-success" id="task.content" name="content"
+                                required [(ngModel)]="task.content">
+                            } @else {
+                            <p>{{task.content}}</p>
+                            }
                         </div>
-                        <p>{{task.content}}</p>
-                    </div>
-                    <div class="mt-3">
-                        <div class="d-flex">
-                            <h5 class="text-success mt-2">Description</h5>
-                            <button class="btn btn-outline-success btn-sm ms-5">Live Edit</button>
+                        <div class="mt-3">
+                            <div class="d-flex mt-2">
+                                <h5 class="text-success w-50">Description</h5>
+                                <div class="w-50">
+                                    <button type="button" class="btn btn-outline-success btn-sm mb-2"
+                                        (click)="onLiveEdit('description')">Live
+                                        Edit</button>
+                                </div>
+                            </div>
+                            @if(editMode().description) {
+                            <textarea class="form-control text-success" placeholder="Description" id="floatingTextarea"
+                                [(ngModel)]="task.description" name="taskDescription"></textarea>
+                            } @else {
+                            <p>{{task.description}}</p>
+                            }
                         </div>
-                        <p>{{task.description}}</p>
-                    </div>
-                    <div class="mt-3">
-                        <div class="d-flex">
-                            <h5 class="text-success mt-2">Date</h5>
-                            <button class="btn btn-outline-success btn-sm ms-5">Live Edit</button>
+                        <div class="mt-3">
+                            <div class="d-flex">
+                                <h5 class="text-success mt-2 w-50">Date</h5>
+                                <div class="w-50">
+                                    <button type="button" class="btn btn-outline-success btn-sm mb-2"
+                                        (click)="onLiveEdit('due_date')">Live Edit</button>
+                                </div>
+                            </div>
+                            @if(editMode().due_date) {
+                            <input type="date" class="form-control text-success" id="taskDueDate" name="taskDueDate"
+                                [min]="minDate" [(ngModel)]="task.due_date" style="max-width: 10rem;">
+                            } @else {
+                            <p class="fs-6">{{task.due?.date}}</p>
+                            }
                         </div>
-                        <p class="fs-6">{{task.due?.date}}</p>
-                    </div>
-
-                    <div class="mt-3">
-                        <div class="d-flex">
-                            <h5 class="text-success mt-2">Priority</h5>
-                            <button class="btn btn-outline-success btn-sm ms-5">Live Edit</button>
+                        <div class="mt-3">
+                            <div class="d-flex mt-2">
+                                <h5 class="text-success w-50">Priority</h5>
+                                <div class="w-50">
+                                    <button type="button" class="btn btn-outline-success btn-sm  mb-2"
+                                        (click)="onLiveEdit('priority')">Live Edit</button>
+                                </div>
+                            </div>
+                            @if(editMode().priority) {
+                            <select class="form-select text-success" aria-label="Default select example" name="priority"
+                                required [(ngModel)]="task.priority" style="max-width: 6rem;">
+                                <option selected>1</option>
+                                @for(priority of priority.slice(1,priority.length); track priority){
+                                <option value="{{priority}}">
+                                    {{priority}}
+                                </option>
+                                }
+                            </select>
+                            } @else {
+                            <i class="bi bi-flag-fill ms-3" [ngClass]="priorityFlag[task.priority-1]"></i>
+                            }
                         </div>
-                        <i class="bi bi-flag-fill ms-3" [ngClass]="priorityFlag[task.priority-1]"></i>
-                    </div>
+                        <div class="d-flex mt-3 me-5 justify-content-between">
+                            <button type="button" class="btn btn-light" (click)="onLiveEditCancel()">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </form>
                 </div>
                 }
             </li>
