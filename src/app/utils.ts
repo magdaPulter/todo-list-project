@@ -44,4 +44,10 @@ export const utils = {
     priority: 'Select Priority',
     projectId: 'Select Project',
   },
+  editParameters: {
+    content: false,
+    description: false,
+    due_date: false,
+    priority: false,
+  },
 };
