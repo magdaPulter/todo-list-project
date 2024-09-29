@@ -5,6 +5,11 @@
             <input type="text" class="form-control text-success" id="task" placeholder="new task" name="content"
                 required [(ngModel)]="task.content" #content="ngModel">
         </div>
+        <div class="form-floating my-3">
+            <textarea class="form-control text-success" placeholder="Leave a comment here" id="floatingTextarea"
+                [(ngModel)]="task.description" name="taskDescription"></textarea>
+            <label class="text-success" for="floatingTextarea">Description</label>
+        </div>
         <select class="form-select text-success mb-3" aria-label="Default select example" name="projectId" required
             [(ngModel)]="task.project_id">
             <option selected value="2336219468">Inbox</option>
