@@ -13,19 +13,11 @@ import { ProjectModel } from '../../models/project-model.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { utils } from '../../utils';
+import { EditParameter, Order, SortParameter, utils } from '../../utils';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FilterOptionsModel } from '../../models/filters-options.model';
-import { EditModeModel } from '../../models/edit-mode.model';
+import { EditModeModel } from '../../models/edit-model.model';
+import { FilterModel } from '../../models/filter-model';
 
-export enum SortParameter {
-  PRIORITY = 'priority',
-  DATE = 'date',
-}
-export enum Order {
-  ASC = 'Asc',
-  DESC = 'Desc',
-}
 @Component({
   selector: 'app-todo-list',
   standalone: true,
@@ -47,7 +39,7 @@ export class TodoListComponent {
   sortedBy: WritableSignal<string | undefined> = signal(undefined);
   orderBy: WritableSignal<string | undefined> = signal(undefined);
 
-  taskSelected: WritableSignal<TaskModel | undefined> = signal(undefined);
+  taskSelected: WritableSignal<TaskModel | null> = signal(null);
 
   tasks: Signal<TaskModel[]> = toSignal(this.taskService.getAllTasks(), {
     initialValue: [],
@@ -59,32 +51,45 @@ export class TodoListComponent {
 
   editMode: WritableSignal<EditModeModel> = signal(utils.editParameters);
 
-  filterOptions = signal(utils.filterOptions);
+  readonly filterOptionsObjArr: FilterModel[] = [
+    { label: 'search', value: signal('') },
+    { label: 'priority', value: signal('All Priorities') },
+    { label: 'project', value: signal('All Projects') },
+  ];
+  filterOptions: Signal<FilterModel[]> = signal(this.filterOptionsObjArr);
 
   filteredSortedTasks: Signal<TaskModel[]> = computed(() => {
     return this.tasks()
       .filter((task) => {
-        return task.content.toLowerCase().includes(this.filterOptions().search);
+        return task.content.toLowerCase().includes(
+          this.filterOptions()
+            .filter((filterOption) => filterOption.label === 'search')[0]
+            .value()
+        );
       })
       .filter((task) =>
-        this.filterOptions().priority === 'Select Priority'
-          ? task
-          : task.priority.toString() === this.filterOptions().priority
+        this.filterOptions().find((filterOption) =>
+          filterOption.value() === 'All Priorities'
+            ? task
+            : filterOption.value() === task.priority.toString()
+        )
       )
       .filter((task) =>
-        this.filterOptions().projectId === 'Select Project'
-          ? task
-          : task.project_id === this.filterOptions().projectId
+        this.filterOptions().find((filterOption) =>
+          filterOption.value() === 'All Projects'
+            ? task
+            : filterOption.value() === task.project_id
+        )
       )
       .sort((a: TaskModel, b: TaskModel) => {
-        if (this.sortedBy() === 'priority') {
+        if (this.sortedBy() === 'due_date' && a.due && b.due) {
+          return this.orderBy() === 'Asc'
+            ? utils.dateTime(a.due.date) - utils.dateTime(b.due.date)
+            : utils.dateTime(b.due.date) - utils.dateTime(a.due.date);
+        } else {
           return this.orderBy() === 'Asc'
             ? a.priority - b.priority
             : b.priority - a.priority;
-        } else {
-          return this.orderBy() === 'Asc'
-            ? utils.dateTime(a.due!.date) - utils.dateTime(b.due!.date)
-            : utils.dateTime(b.due!.date) - utils.dateTime(a.due!.date);
         }
       });
   });
@@ -102,48 +107,35 @@ export class TodoListComponent {
     this.filteredSortedTasks();
   }
 
-  onModelChanged($event: keyof FilterOptionsModel, parameter: string) {
-    switch (parameter) {
-      case 'search':
-        this.filterOptions.set({ ...this.filterOptions(), search: $event });
-        break;
-      case 'priority':
-        this.filterOptions.set({ ...this.filterOptions(), priority: $event });
-        break;
-      case 'projectId':
-        this.filterOptions.set({ ...this.filterOptions(), projectId: $event });
-        break;
-    }
-  }
   onTaskSelected(task: TaskModel) {
     this.editMode.set(utils.editParameters);
-    return this.taskSelected() === undefined
+    return this.taskSelected() === null
       ? this.taskSelected.set(task)
-      : this.taskSelected.set(undefined);
+      : this.taskSelected.set(null);
   }
 
   onLiveEdit(parameter: string) {
     switch (parameter) {
-      case 'content':
+      case EditParameter.CONTENT:
         this.editMode.set({ ...this.editMode(), content: true });
         break;
-      case 'description':
+      case EditParameter.DESCRIPTION:
         this.editMode.set({ ...this.editMode(), description: true });
         break;
-      case 'due_date':
+      case EditParameter.DUE_DATE:
         this.editMode.set({ ...this.editMode(), due_date: true });
         break;
-      case 'priority':
+      case EditParameter.PRIORITY:
         this.editMode.set({ ...this.editMode(), priority: true });
         break;
     }
   }
   onTaskUpdated(task: TaskModel) {
     this.taskService.update(task).subscribe(() => {
-      this.taskSelected.set(undefined);
+      this.taskSelected.set(null);
     });
   }
   onLiveEditCancel() {
-    this.taskSelected.set(undefined);
+    this.taskSelected.set(null);
   }
 }

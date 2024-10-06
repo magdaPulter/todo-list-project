@@ -12,33 +12,37 @@
     }
 </div>
 <form class="mb-2 px-3">
-    <div class="d-flex mb-3">
-        <div class="input-group flex-nowrap">
-            <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search text-success"></i></span>
-            <input type="task" ngModel="" name="search" class="form-control text-success"
-                (ngModelChange)="onModelChanged($event, 'search')">
+    <div class="row">
+        @for(filterOption of filterOptions(); track filterOption) {
+        @if(filterOption.label === 'search') {
+        <div class="w-100 mb-3">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search text-success"></i></span>
+                <input type="task" [(ngModel)]="filterOption.value" name="search" class="form-control text-success">
+            </div>
         </div>
-    </div>
-    <div class="d-flex gap-sm-2 gap-0">
-        <select class="form-select text-success" aria-label="Default select example"
-            [(ngModel)]="filterOptions().priority" name="priority" (ngModelChange)="onModelChanged($event, 'priority')">
-            <option selected>Select Priority</option>
+        } @else if(filterOption.label === 'priority'){
+        <select class="form-select text-success col mx-2" aria-label="Default select example"
+            [(ngModel)]="filterOption.value" name="priority">
+            <option selected>All Priorities</option>
             @for(priority of priority; track priority){
             <option value="{{priority}}">
                 {{priority}}
             </option>
             }
         </select>
-        <select class="form-select text-success" aria-label="Default select example"
-            [(ngModel)]="filterOptions().projectId" name="project"
-            (ngModelChange)="onModelChanged($event, 'projectId')">
-            <option selected>Select Project</option>
+        } @else {
+        <select class="form-select text-success col mx-2" aria-label="Default select example"
+            [(ngModel)]="filterOption.value" name="project">
+            <option selected>All Projects</option>
             @for(project of projects(); track project.id){
             <option value="{{project.id}}">
                 {{project.name}}
             </option>
             }
         </select>
+        }
+        }
     </div>
 </form>
 <ul class="list-group list-group-flush border-0 ">
