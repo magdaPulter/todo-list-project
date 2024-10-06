@@ -5,6 +5,28 @@ export enum Priority {
   FOUR = 4,
 }
 
+export enum SortParameter {
+  PRIORITY = 'priority',
+  DATE = 'date',
+}
+export enum Order {
+  ASC = 'Asc',
+  DESC = 'Desc',
+}
+
+export enum EditParameter {
+  CONTENT = 'content',
+  DESCRIPTION = 'description',
+  DUE_DATE = 'due_date',
+  PRIORITY = 'priority',
+}
+
+export enum FilterParameter {
+  SEARCH = 'search',
+  PRIORITY = 'priority',
+  PROJECTID = 'projectId',
+}
+
 export const utils = {
   minDate(): string {
     const date = new Date();
@@ -38,11 +60,6 @@ export const utils = {
   ],
   dateTime(date: string): number {
     return new Date(date).getTime();
-  },
-  filterOptions: {
-    search: '',
-    priority: 'Select Priority',
-    projectId: 'Select Project',
   },
   editParameters: {
     content: false,

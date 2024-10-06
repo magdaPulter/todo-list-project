@@ -12,33 +12,37 @@
     }
 </div>
 <form class="mb-2 px-3">
-    <div class="d-flex mb-3">
-        <div class="input-group flex-nowrap">
-            <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search text-success"></i></span>
-            <input type="task" ngModel="" name="search" class="form-control text-success"
-                (ngModelChange)="onModelChanged($event, 'search')">
+    <div class="row">
+        @for(filterOption of filterOptions(); track filterOption) {
+        @if(filterOption.label === 'search') {
+        <div class="w-100 mb-3">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search text-success"></i></span>
+                <input type="task" [(ngModel)]="filterOption.value" name="search" class="form-control text-success">
+            </div>
         </div>
-    </div>
-    <div class="d-flex gap-sm-2 gap-0">
-        <select class="form-select text-success" aria-label="Default select example"
-            [(ngModel)]="filterOptions().priority" name="priority" (ngModelChange)="onModelChanged($event, 'priority')">
-            <option selected>Select Priority</option>
+        } @else if(filterOption.label === 'priority'){
+        <select class="form-select text-success col mx-2" aria-label="Default select example"
+            [(ngModel)]="filterOption.value" name="priority">
+            <option selected>All Priorities</option>
             @for(priority of priority; track priority){
             <option value="{{priority}}">
                 {{priority}}
             </option>
             }
         </select>
-        <select class="form-select text-success" aria-label="Default select example"
-            [(ngModel)]="filterOptions().projectId" name="project"
-            (ngModelChange)="onModelChanged($event, 'projectId')">
-            <option selected>Select Project</option>
+        } @else {
+        <select class="form-select text-success col mx-2" aria-label="Default select example"
+            [(ngModel)]="filterOption.value" name="project">
+            <option selected>All Projects</option>
             @for(project of projects(); track project.id){
             <option value="{{project.id}}">
                 {{project.name}}
             </option>
             }
         </select>
+        }
+        }
     </div>
 </form>
 <ul class="list-group list-group-flush border-0 ">
@@ -52,7 +56,8 @@
                 <div class="form-check">
                     <input (change)="onCheck(task)" class="form-check-input bg-success bg-opacity-75"
                         [(ngModel)]="task.is_completed" type="checkbox" [value]="task.is_completed"
-                        name="task.is_completed" [id]="task.id">
+                        name="task.is_completed" [id]="task.id" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
                     <label class="form-check-label d-flex justify-content-between" [for]="task.id">
                         <span class="me-3 w-50"
                             [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">{{task.content}}
@@ -160,6 +165,27 @@
             </li>
         </ul>
         }
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Are You Sure?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            (click)="onModalCanceled()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure You want to complete task?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            (click)="onModalCanceled()">No</button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            (click)="onModalConfimed()">Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         }
     </li>
     }
