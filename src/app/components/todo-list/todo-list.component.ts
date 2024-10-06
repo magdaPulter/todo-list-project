@@ -26,39 +26,49 @@ import { EditModel } from '../../models/edit.model';
   styleUrl: './todo-list.component.scss',
 })
 export class TodoListComponent {
-  priorityFlag = utils.priorityFlag;
-  priority = utils.priority;
-  minDate = utils.minDate();
-  task = utils.task;
-  taskService = inject(TaskService);
-  projectService = inject(ProjectService);
+  public priorityFlag = utils.priorityFlag;
+  public priority = utils.priority;
+  public minDate = utils.minDate();
+  public task = utils.task;
 
-  sortedByList: SortParameter[] = [SortParameter.PRIORITY, SortParameter.DATE];
-  orderList: Order[] = [Order.ASC, Order.DESC];
+  readonly taskService = inject(TaskService);
+  readonly projectService = inject(ProjectService);
 
-  sortedBy: WritableSignal<string | undefined> = signal(undefined);
-  orderBy: WritableSignal<string | undefined> = signal(undefined);
+  public sortedByList: SortParameter[] = [
+    SortParameter.PRIORITY,
+    SortParameter.DATE,
+  ];
+  public orderList: Order[] = [Order.ASC, Order.DESC];
 
-  taskSelected: WritableSignal<TaskModel | null> = signal(null);
+  readonly sortedBy: WritableSignal<string | undefined> = signal(undefined);
+  readonly orderBy: WritableSignal<string | undefined> = signal(undefined);
 
-  tasks: Signal<TaskModel[]> = toSignal(this.taskService.getAllTasks(), {
-    initialValue: [],
-  });
-  projects: Signal<ProjectModel[]> = toSignal(
+  readonly taskSelected: WritableSignal<TaskModel | null> = signal(null);
+  readonly taskCompletedId: WritableSignal<string> = signal('');
+
+  readonly tasks: Signal<TaskModel[]> = toSignal(
+    this.taskService.getRefreshedTaskList(),
+    {
+      initialValue: [],
+    }
+  );
+  readonly projects: Signal<ProjectModel[]> = toSignal(
     this.projectService.getProjects(),
     { initialValue: [] }
   );
 
-  editMode: WritableSignal<EditModel> = signal(utils.editParameters);
+  readonly editMode: WritableSignal<EditModel> = signal(utils.editParameters);
 
   readonly filterOptionsObjArr: FilterModel[] = [
     { label: 'search', value: signal('') },
     { label: 'priority', value: signal('All Priorities') },
     { label: 'project', value: signal('All Projects') },
   ];
-  filterOptions: Signal<FilterModel[]> = signal(this.filterOptionsObjArr);
+  readonly filterOptions: Signal<FilterModel[]> = signal(
+    this.filterOptionsObjArr
+  );
 
-  filteredSortedTasks: Signal<TaskModel[]> = computed(() => {
+  readonly filteredSortedTasks: Signal<TaskModel[]> = computed(() => {
     return this.tasks()
       .filter((task) => {
         return task.content.toLowerCase().includes(
@@ -93,9 +103,24 @@ export class TodoListComponent {
         }
       });
   });
+  private getCompletedTask(): TaskModel {
+    return this.filteredSortedTasks().filter(
+      (task) => task.id === this.taskCompletedId()
+    )[0];
+  }
 
   onCheck(task: TaskModel) {
-    this.taskService.close(task).subscribe();
+    this.taskCompletedId.set(task.id);
+  }
+  onModalCanceled() {
+    this.taskService
+      .update(this.getCompletedTask())
+      .subscribe(() => this.taskService.refreshListSubject.next());
+  }
+  onModalConfimed() {
+    this.taskService
+      .close(this.getCompletedTask())
+      .subscribe(() => this.taskService.refreshListSubject.next());
   }
   onSortBy(sortParameter: string) {
     this.sortedBy.set(sortParameter);

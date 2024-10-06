@@ -56,7 +56,8 @@
                 <div class="form-check">
                     <input (change)="onCheck(task)" class="form-check-input bg-success bg-opacity-75"
                         [(ngModel)]="task.is_completed" type="checkbox" [value]="task.is_completed"
-                        name="task.is_completed" [id]="task.id">
+                        name="task.is_completed" [id]="task.id" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
                     <label class="form-check-label d-flex justify-content-between" [for]="task.id">
                         <span class="me-3 w-50"
                             [ngStyle]="{ textDecoration: task.is_completed ? 'line-through' : '' }">{{task.content}}
@@ -164,6 +165,27 @@
             </li>
         </ul>
         }
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Are You Sure?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            (click)="onModalCanceled()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure You want to complete task?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            (click)="onModalCanceled()">No</button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                            (click)="onModalConfimed()">Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         }
     </li>
     }
