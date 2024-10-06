@@ -15,8 +15,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EditParameter, Order, SortParameter, utils } from '../../utils';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { EditModeModel } from '../../models/edit-model.model';
 import { FilterModel } from '../../models/filter-model';
+import { EditModel } from '../../models/edit.model';
 
 @Component({
   selector: 'app-todo-list',
@@ -49,7 +49,7 @@ export class TodoListComponent {
     { initialValue: [] }
   );
 
-  editMode: WritableSignal<EditModeModel> = signal(utils.editParameters);
+  editMode: WritableSignal<EditModel> = signal(utils.editParameters);
 
   readonly filterOptionsObjArr: FilterModel[] = [
     { label: 'search', value: signal('') },
