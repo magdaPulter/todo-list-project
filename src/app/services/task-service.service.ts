@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { TaskModel } from '../models/task-model.model';
 import { servicesUtils } from '../serviceUtils';
 
@@ -10,10 +10,20 @@ import { servicesUtils } from '../serviceUtils';
 export class TaskService {
   constructor(private _httpClient: HttpClient) {}
 
+  public refreshListSubject: BehaviorSubject<void> = new BehaviorSubject<void>(
+    void 0
+  );
+
   getAllTasks(): Observable<TaskModel[]> {
     return this._httpClient.get<TaskModel[]>(`${servicesUtils.url}/tasks`, {
       headers: servicesUtils.headers,
     });
+  }
+
+  getRefreshedTaskList(): Observable<TaskModel[]> {
+    return this.refreshListSubject
+      .asObservable()
+      .pipe(switchMap(() => this.getAllTasks()));
   }
 
   getTask(taskId: string): Observable<TaskModel> {
