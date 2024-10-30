@@ -25,7 +25,7 @@
         <select class="form-select text-success col mx-2" aria-label="Default select example"
             [(ngModel)]="filterOption.value" name="priority">
             <option selected>All Priorities</option>
-            @for(priority of priority; track priority){
+            @for(priority of priorityNumber; track priority){
             <option value="{{priority}}">
                 {{priority}}
             </option>
@@ -91,7 +91,7 @@
                                 <h5 class="text-success w-50">Content</h5>
                                 <div class="w-50">
                                     <button type="button" class="btn btn-outline-success mb-2 btn-sm"
-                                        (click)="onLiveEdit('content')">Live
+                                        (click)="onLiveEdit(content)">Live
                                         Edit</button>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                 <h5 class="text-success w-50">Description</h5>
                                 <div class="w-50">
                                     <button type="button" class="btn btn-outline-success btn-sm mb-2"
-                                        (click)="onLiveEdit('description')">Live
+                                        (click)="onLiveEdit(description)">Live
                                         Edit</button>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                                 <h5 class="text-success mt-2 w-50">Date</h5>
                                 <div class="w-50">
                                     <button type="button" class="btn btn-outline-success btn-sm mb-2"
-                                        (click)="onLiveEdit('due_date')">Live Edit</button>
+                                        (click)="onLiveEdit(due_date)">Live Edit</button>
                                 </div>
                             </div>
                             @if(editMode().due_date) {
@@ -138,7 +138,7 @@
                                 <h5 class="text-success w-50">Priority</h5>
                                 <div class="w-50">
                                     <button type="button" class="btn btn-outline-success btn-sm  mb-2"
-                                        (click)="onLiveEdit('priority')">Live Edit</button>
+                                        (click)="onLiveEdit(priority)">Live Edit</button>
                                 </div>
                             </div>
                             @if(editMode().priority) {

@@ -27,9 +27,14 @@ import { EditModel } from '../../models/edit.model';
 })
 export class TodoListComponent {
   public priorityFlag = utils.priorityFlag;
-  public priority = utils.priority;
+  public priorityNumber = utils.priority;
   public minDate = utils.minDate();
   public task = utils.task;
+
+  public content = EditParameter.CONTENT;
+  public description = EditParameter.DESCRIPTION;
+  public due_date = EditParameter.DUE_DATE;
+  public priority = EditParameter.PRIORITY;
 
   readonly taskService = inject(TaskService);
   readonly projectService = inject(ProjectService);
@@ -139,7 +144,7 @@ export class TodoListComponent {
       : this.taskSelected.set(null);
   }
 
-  onLiveEdit(parameter: string) {
+  onLiveEdit(parameter: EditParameter) {
     switch (parameter) {
       case EditParameter.CONTENT:
         this.editMode.set({ ...this.editMode(), content: true });
