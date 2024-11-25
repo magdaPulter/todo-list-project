@@ -18,11 +18,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FilterModel } from '../../models/filter-model';
 import { EditModel } from '../../models/edit.model';
 import { FiltersComponent } from '../filters/filters.component';
+import { SortComponent } from '../sort/sort.component';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, FiltersComponent],
+  imports: [
+    FormsModule,
+    CommonModule,
+    RouterModule,
+    FiltersComponent,
+    SortComponent,
+  ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
 })
@@ -39,12 +46,6 @@ export class TodoListComponent {
 
   readonly taskService = inject(TaskService);
   readonly projectService = inject(ProjectService);
-
-  public sortedByList: SortParameter[] = [
-    SortParameter.PRIORITY,
-    SortParameter.DATE,
-  ];
-  public orderList: Order[] = [Order.ASC, Order.DESC];
 
   readonly sortedBy: WritableSignal<string | undefined> = signal(undefined);
   readonly orderBy: WritableSignal<string | undefined> = signal(undefined);
