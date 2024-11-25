@@ -17,11 +17,12 @@ import { EditParameter, Order, SortParameter, utils } from '../../utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FilterModel } from '../../models/filter-model';
 import { EditModel } from '../../models/edit.model';
+import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, FiltersComponent],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
 })
