@@ -1,0 +1,30 @@
+<div class="form-check">
+    <input (change)="onCheck(item)" class="form-check-input bg-success bg-opacity-75" [(ngModel)]="item.is_completed"
+        type="checkbox" [value]="item.is_completed" name="item.is_completed" [id]="item.id" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+
+    <label class="form-check-label d-flex justify-content-between" [for]="item.id">
+        <span class="me-3 w-50" [ngStyle]="{ textDecoration: item.is_completed ? 'line-through' : '' }">{{item.content}}
+            <i class="bi bi-flag-fill ms-3" [ngClass]="priorityFlag[item.priority-1]"></i>
+        </span>
+
+        <div class="w-50">
+            <div class="d-flex">
+                <span class="fs-6 fw-light align-self-center">{{item.due?.date}}</span>
+                <button class="btn border-0 ps-2 pe-0" [routerLink]="'task-detail/'+ item.id">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+                <button class="btn border-0" [routerLink]="'edit-task/'+ item.id">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </div>
+            <ng-content></ng-content>
+            <!-- 
+            <button class="btn btn-light text-success" (click)="onitemSelected(item)">
+                <span> {{itemSelected() === item ? 'show less' : 'show more'}}</span>
+                <i class="bi ms-1"
+                    [ngClass]="{'bi-chevron-up' : itemSelected() === item, 'bi-chevron-down': itemSelected() !== item}"></i>
+            </button> -->
+        </div>
+    </label>
+</div>

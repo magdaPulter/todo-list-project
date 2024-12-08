@@ -20,6 +20,7 @@ import { EditModel } from '../../models/edit.model';
 import { FiltersComponent } from '../filters/filters.component';
 import { SortComponent } from '../sort/sort.component';
 import { ModalComponent } from '../modal/modal.component';
+import { ListItemComponent } from '../list-item/list-item.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -31,6 +32,7 @@ import { ModalComponent } from '../modal/modal.component';
     FiltersComponent,
     SortComponent,
     ModalComponent,
+    ListItemComponent,
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
