@@ -1,0 +1,13 @@
+<div class="d-flex py-3 px-sm-5 justify-content-around">
+    @for(sortParameter of sortedByList; track sortParameter){
+    <button class="btn btn-outline-success mx-2" (click)="sortByHandle(sortParameter)"
+        [ngClass]="{'active': sortParameter === sortedBy}">
+        sort by {{sortParameter}}
+    </button>
+    }
+    @for(order of orderList; track order) {
+    <button class="btn btn-outline-success mx-2" (click)="sortHandle(order)" [ngClass]="{'active': order === orderBy}">
+        <i class="bi" [ngClass]="{'bi-sort-up': order === 'Asc', 'bi-sort-down' : order === 'Desc'}"></i>
+    </button>
+    }
+</div>
